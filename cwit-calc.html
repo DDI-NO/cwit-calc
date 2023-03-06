@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CWIT Norm Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <style media="screen">
+    #calc {
+      padding: 25px;
+    }
+
+    .measures {
+      margin-bottom: 25px;
+    }
+
+  </style>  
+
+</head>
+
+<body class="bg-light">
+  <div class="container">
+    <div class="py-5 text-center">
+
+      <h2>CWIT Norm Calculator</h2>
+
+    </div>
+
+    <div class="border rounded">
+      <form class="" action="#" id="calc">
+        <div class="measures">
+          <!-- Demographics -->
+          <div class="form-group row">
+            <label for="age1" class="col-sm-2 col-form-label">Age</label>
+            <div class="col-sm-4 col-4">
+              <input type="number" class="form-control form-control-sm" name="age" id="age" min="49" max="79" placeholder="49 - 79" required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="years1" class="col-sm-2 col-form-label">Years of education</label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control form-control-sm" name="edu" id="edu" min="6" max="24" placeholder="6 - 24" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="gender" class="col-sm-2 col-form-label">Sex</label>
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="sex" id="radio-male" value="0" checked>
+                <label class="form-check-label" for="radio-male">
+                  Male
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="sex" id="radio-female" value="1">
+                <label class="form-check-label" for="radio-female">
+                  Female
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-10 measures">
+            <button type="submit" class="btn btn-primary">Calculate</button>
+          </div>
+        </div>
+
+
+        <div class="measures">
+          <h5>Main measures</h5>
+          <div class="form-group row">
+            <div class="col-sm-2 col-3">
+            </div>
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Raw score</label>
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">T-Score</label>
+            
+          </div>
+
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 1</label>
+            <div class="col-sm-2 col-3">
+              <input type="number" class="form-control form-control-sm raw" data-cwit="cwit1" id="raw-1">
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="t-score-cwit1" readonly>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 2</label>
+            <div class="col-sm-2 col-3">
+              <input type="number" class="form-control form-control-sm raw" id="raw-2" data-cwit="cwit2">
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="t-score-cwit2" readonly>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 3</label>
+            <div class="col-sm-2 col-3">
+              <input type="number" class="form-control form-control-sm raw" id="raw-3" data-cwit="cwit3">
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="t-score-cwit3" readonly>
+            </div>
+            
+          </div>
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 4</label>
+            <div class="col-sm-2 col-3">
+              <input type="number" class="form-control form-control-sm raw" id="raw-4" data-cwit="cwit4">
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="t-score-cwit4" readonly>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="measures" id="error-container">
+          <h5>Errors</h5>
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 3</label>
+            
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm error" id="error-cwit3" readonly>
+            </div>
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label-sm">50 (cumulative percentage)</label>
+          </div>
+          <div class="form-group row">
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 4</label>
+            
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm error" id="error-cwit4" readonly>
+            </div>
+            <label for="error-cwit4" class="col-sm-2 col-3 col-form-label-sm">50 (cumulative percentage)</label>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <footer class="container py-5">
+      <small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
+        Supplement of <em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85</em></small>
+    </footer>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $('#calc').submit(function() {
+      calculate();
+      return false;
+    });
+    const t_score_min = 20;
+    const t_score_max = 80;
+    var regression = {
+      'mean_age' : 46.165183,
+      'mean_edu' : 15.456973,
+      'cwit1': {
+        'intercept' :  9.863261,
+        'demographic_coefs' : {
+                            "age" :  -0.048884,
+                            "age2" :  -0.001047,
+                            "sex" :  0.824552
+                          },
+        "sd" :  2.774862,
+        'scalingTable' : [
+          ['>=56', 1], //>= 56
+          ['48-55', 2],
+          ['46-47', 3],
+          ['42-45', 4],
+          ['40-41', 5],
+          ['37-39', 6],
+          ['35-36', 7],
+          ['33-34', 8],
+          ['31-32', 9],
+          ['29-30', 10],
+          ['27-28', 11],
+          [26, 12],
+          [25, 13],
+          ['23-24', 14],
+          [22, 15],
+          [21, 16],
+          [20, 17],
+          [19, 18],
+          ['<=18', 19], // <= 18
+        ]
+      },
+
+      'cwit2': {
+        'intercept': 10.2171656,
+        'demographic_coefs' : {
+                                'age': -0.0185594,
+                                "age2" :  -0.0009477
+                              },
+        'sd': 1.812938,
+        'scalingTable' : [['>=52', 1], // ≥52
+                          ['37-51', 2],
+                          ['34-36', 3],
+                          ['31-33', 4],
+                          ['28-30', 5],
+                          [27, 6],
+                          ['25-26', 7],
+                          [24, 8],
+                          [23, 9],
+                          ['21-22', 10],
+                          [20, 11],
+                          [19, 12],
+                          [18, 13],
+                          [17, 14],
+                          [16, 15],
+                          [15, 16],
+                          ['<=14', 18], // ≤14
+                        ]
+      },
+
+      'cwit3': {
+        'intercept': 10.1824414,  
+        'demographic_coefs' : {
+                              'age': -0.0725760,  
+                              'age2': -0.0012170,  
+                              'sex': 0.4544109,
+                              'edu': 0.0777976
+                            },
+        'sd': 2.545823, 
+        'scalingTable' : [
+                          ['>=130', 1], // ≥130
+                          ['114-129', 2],
+                          ['99-113', 3],
+                          ['85-98', 4],
+                          ['77-84', 5],
+                          ['69-76', 6],
+                          ['63-68', 7],
+                          ['58-62', 8],
+                          ['53-57', 9],
+                          ['49-52', 10],
+                          ['45-48', 11],
+                          ['42-44', 12],
+                          ['40-41', 13],
+                          ['37-39', 14],
+                          ['35-36', 15],
+                          ['33-34', 16],
+                          ['31-32', 17],
+                          ['27-30', 18],
+                          ['<=26', 19], // ≤26
+                        ],
+        'errors' : [
+                    [0, 100],
+                    [1, 51.4],
+                    [2, 23.2],
+                    [3, 11.1],
+                    [4, 5.2],
+                    [5, 2.8],
+                    [6, 1.2],
+                    [7, 0.5],
+                    [8, 0.4],
+                    [9, 0.2],
+                    [10, 0.2],
+                    [11, 0.1]
+                  ]
+      },
+
+      'cwit4': {
+        'intercept': 10.5608373, 
+        'demographic_coefs' : {
+                              'age': -0.0629144,
+                              'age2': -0.0015815,
+                              'edu': 0.0981283
+                            },
+        'sd': 2.573627, 
+        'scalingTable' : [
+                          ['>=168', 1], 
+                          ['133-167', 2],
+                          ['117-132', 3],
+                          ['101-116', 4],
+                          ['88-100', 5],
+                          ['78-87', 6],
+                          ['71-77', 7],
+                          ['65-70', 8],
+                          ['60-64', 9],
+                          ['55-59', 10],
+                          ['51-54', 11],
+                          ['48-50', 12],
+                          ['45-47', 13],
+                          ['42-44', 14],
+                          ['39-41', 15],
+                          ['37-38', 16],
+                          ['34-36', 17],
+                          ['31-33', 18],
+                          ['<=30', 19], 
+                        ],
+        'errors' : [
+                    [0, 100],
+                    [1, 55.4],
+                    [2, 26.5],
+                    [3, 12.9],
+                    [4, 6.3],
+                    [5, 3.2],
+                    [6, 1.5],
+                    [7, 1.1],
+                    [8, 0.6],
+                    [9, 0.6],
+                    [10, 0.6],
+                    [11, 0.2]
+                  ]                
+      },      
+    }
+
+    /**
+     * This function a escaling entry and a rawValue and returns true if the rawValue is in the range of the entry
+     * @param {Array} entry - an array of two elements, the first is the range and the second is the value to return if the rawValue is in the range
+     * @param {Number} rawValue - the raw value to be evaluated
+     * @return {Boolean} - true if the rawValue is in the range of the entry
+     */
+    function evaluateScalingEntry(entry, rawValue){
+      if (typeof entry[0] === 'number') {
+        return rawValue == entry[0];
+      } else if (typeof entry[0] === 'string'){
+        // if there is a - in the string then it is a range
+        if (entry[0].indexOf('-') > -1) {
+          var range = entry[0].split('-');
+          return rawValue >= range[0] && rawValue <= range[1];
+        } 
+        // if there is a '>=' in the string then it the upper cutoff
+        else if (entry[0].indexOf('>=') > -1) {
+          var min = entry[0].split('>=')[1];
+          return rawValue >= min;
+        }
+        // if there is a '<=' in the string then it is the lower cutoff
+        else if (entry[0].indexOf('<=') > -1) {
+          var max = entry[0].split('<=')[1];
+          return rawValue <= max;
+        }
+      }
+    }
+
+    /**
+     * This function takes in a raw value and a scaling table and returns the scaled value
+     * 
+     * @param {number} rawValue - the raw value to be scaled
+     * @param {array} scalingTable - the scaling table to use
+     * @returns {number} - the scaled value
+     */
+    function scaleValue(value, lookupTable) {
+      // Find the index of the input value in the lookup table
+      var i = 0;
+      while (i < lookupTable.length - 1 && !evaluateScalingEntry(lookupTable[i], value)) {
+        i++;
+      }
+      var scaled = lookupTable[i][1];
+      return scaled;
+    }
+
+    /**
+     * This function takes the demographic coefs of the test and returns the sum of the product of the demographic data and the regression coefficients
+     * @param {Object} demographic - the demographic data
+     * @return {Number} - the sum of the product of the demographic data and the regression coefficients
+     */
+    function sumProduct(demographic) {
+      var sum = 0;
+      for (var key in demographic) {
+        if (demographic.hasOwnProperty(key)) {
+          var val = demographic[key];
+          var elem = document.getElementsByName(key)[0];
+
+          if(elem !== undefined){
+            var elemVal = parseInt(elem.value);
+            // if the item key is not sex, then it is an age or education item
+            if(key != 'sex'){
+              mean = regression['mean_' + key];
+              // mean center the value
+              elemVal = elemVal - mean;
+            }
+            sum += val * elemVal;
+            // in the case of age, also sum the square value
+            if(key == 'age'){
+              sum += val * elemVal * elemVal;
+            }
+          }
+          
+        }
+      }
+      return sum;
+    }
+
+    function calculate_tscore(elem) {
+      if (this.value !== '') {
+        var value = parseInt(this.value);
+        var cwit = $(this).data('cwit');
+        var cwit_coefs = regression[cwit];
+        var demographic = cwit_coefs.demographic_coefs;
+        var scalingTable = cwit_coefs.scalingTable;
+        var scaledScore = scaleValue(value, scalingTable);
+        // iterate over demographic coefficients, for each item get the value of the HTML element having the same name attribute. 
+        // to obtain the sum the product of each item value and the retrieved HTML element value.
+        var sum = sumProduct(demographic);
+        // predicted value by regression
+        var predicted = cwit_coefs.intercept + sum;
+        // difference between scaled score and predicted value
+        var dif = scaledScore - predicted;
+        // z-score and t-score
+        var zscore = (scaledScore - predicted) / cwit_coefs.sd;
+        var tscore = Math.max(t_score_min, Math.min(t_score_max, Math.round(zscore * 10 + 50)));
+        console.log(cwit + '==> predicted=' + predicted + ' dif='+dif + ' zscore='+zscore + ' tscore='+tscore);
+        $('#t-score-' + cwit).val(tscore);
+      }
+    }   
+
+    function set_tscore(element, tscore) {
+      if (!Number.isNaN(tscore)) {
+        $(element).val(tscore);
+      } else {
+        $(element).val('');
+      }
+    }
+
+    function get_percentage(raw, percentages){
+      var error = 100;
+      var i = 0;
+
+      while (i < percentages.length - 1 && raw != percentages[i][0]) {
+        i++;
+        error = percentages[i][1];
+      }
+      return error;
+    }
+
+    function calculate_errors(){
+      tests = ['3', '4'];
+      for(var i = 0; i < tests.length; i++){
+        var test = tests[i];
+        // get the element value
+        var elem = document.getElementById('raw-' + test);
+        if (elem.value !== '') {
+          var elemVal = parseInt(elem.value);
+          var errors = regression['cwit' + test].errors;
+          var error = get_percentage(elemVal, errors);
+          $('#error-cwit' + test).val(error);
+        }
+      }
+    }
+
+    function calculate() {
+      $('.raw').each(calculate_tscore);
+      calculate_errors();
+    }
+  </script>
+</body>
+
+</html>
