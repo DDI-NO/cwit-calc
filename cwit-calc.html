@@ -35,13 +35,13 @@
           <div class="form-group row">
             <label for="age1" class="col-sm-2 col-form-label">Age</label>
             <div class="col-sm-4 col-4">
-              <input type="number" class="form-control form-control-sm" name="age" id="age" min="49" max="79" placeholder="49 - 79" required />
+              <input type="number" class="form-control form-control-sm" name="age" id="age" min="20" max="85" placeholder="20 - 85" required />
             </div>
           </div>
           <div class="form-group row">
             <label for="years1" class="col-sm-2 col-form-label">Years of education</label>
             <div class="col-sm-4">
-              <input type="number" class="form-control form-control-sm" name="edu" id="edu" min="6" max="24" placeholder="6 - 24" required>
+              <input type="number" class="form-control form-control-sm" name="edu" id="edu" min="7" max="23" placeholder="7 - 23" required>
             </div>
           </div>
           <div class="form-group row">
@@ -77,7 +77,6 @@
             </div>
             <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Raw score</label>
             <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">T-Score</label>
-            
           </div>
 
           <div class="form-group row">
@@ -125,20 +124,30 @@
         <div class="measures" id="error-container">
           <h5>Errors</h5>
           <div class="form-group row">
+            <div class="col-sm-2 col-3">
+            </div>
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">No. of errors</label>
+            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Cumulative %</label>
+          </div>
+          <div class="form-group row">
             <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 3</label>
             
             <div class="col-sm-2 col-3">
-              <input type="text" class="form-control form-control-sm error" id="error-cwit3" readonly>
+              <input type="number" class="form-control form-control-sm error" id="error-cwit3">
             </div>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label-sm">50 (cumulative percentage)</label>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="percentage-cwit3" readonly>
+            </div>
           </div>
           <div class="form-group row">
             <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">CWIT 4</label>
             
             <div class="col-sm-2 col-3">
-              <input type="text" class="form-control form-control-sm error" id="error-cwit4" readonly>
+              <input type="number" class="form-control form-control-sm error" id="error-cwit4">
             </div>
-            <label for="error-cwit4" class="col-sm-2 col-3 col-form-label-sm">50 (cumulative percentage)</label>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm tscore" id="percentage-cwit4" readonly>
+            </div>
           </div>
         </div>
       </form>
@@ -367,22 +376,26 @@
       var sum = 0;
       for (var key in demographic) {
         if (demographic.hasOwnProperty(key)) {
-          var val = demographic[key];
-          var elem = document.getElementsByName(key)[0];
+          var coef = demographic[key];
+          // strip any number from the key string
+          var element_key = key.replace(/\d+/g, '');
+          var elem = document.getElementsByName(element_key)[0];
 
           if(elem !== undefined){
             var elemVal = parseInt(elem.value);
             // if the item key is not sex, then it is an age or education item
             if(key != 'sex'){
-              mean = regression['mean_' + key];
+              mean = regression['mean_' + element_key];
               // mean center the value
               elemVal = elemVal - mean;
+              if(key == 'age2'){
+                // in the case of age2, it is the square the value
+                elemVal = elemVal * elemVal;
+              }
             }
-            sum += val * elemVal;
-            // in the case of age, also sum the square value
-            if(key == 'age'){
-              sum += val * elemVal * elemVal;
-            }
+            
+            sum += coef * elemVal;
+            
           }
           
         }
@@ -409,6 +422,15 @@
         var zscore = (scaledScore - predicted) / cwit_coefs.sd;
         var tscore = Math.max(t_score_min, Math.min(t_score_max, Math.round(zscore * 10 + 50)));
         console.log(cwit + '==> predicted=' + predicted + ' dif='+dif + ' zscore='+zscore + ' tscore='+tscore);
+
+        // if tscore == 80 add >= to the value
+        if (tscore == 80) {
+          tscore = '≥ 80';
+        }
+        // if tscore == 20 add <= to the value
+        if (tscore == 20) {
+          tscore = '≤ 20';
+        }
         $('#t-score-' + cwit).val(tscore);
       }
     }   
@@ -437,12 +459,12 @@
       for(var i = 0; i < tests.length; i++){
         var test = tests[i];
         // get the element value
-        var elem = document.getElementById('raw-' + test);
+        var elem = document.getElementById('error-cwit' + test);
         if (elem.value !== '') {
           var elemVal = parseInt(elem.value);
           var errors = regression['cwit' + test].errors;
           var error = get_percentage(elemVal, errors);
-          $('#error-cwit' + test).val(error);
+          $('#percentage-cwit' + test).val(error);
         }
       }
     }
