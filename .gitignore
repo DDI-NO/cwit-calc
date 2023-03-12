@@ -1,3 +1,8 @@
 *.docx
 *.R
 *.xlsx
+*.ipynb
+*.pdf
+*.csv
+*.zip
+*.sav
