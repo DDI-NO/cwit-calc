@@ -16,6 +16,12 @@
       margin-bottom: 25px;
     }
 
+    footer {
+      background-color: #0A2D3A;
+      color: #fff;
+      margin-top: 25px;
+    }
+
   </style>  
 
 </head>
@@ -174,6 +180,12 @@
       <form id="fileForm" class="calc">
         <div class="measures">
           <h5>Bulk processing</h5> <i class="fa-regular fa-circle-question"></i>
+          
+          <div>
+            <p class="text-secondary">Process multiple test results stored in a comma separated file (CSV). Use <a href="cwit_template.csv">this template</a> to follow the expected format.</p>
+          </div>
+          
+          
           <div class="form-group row">
             <label for="formFile" class="form-label">CSV data file</label>
             <div class="col-sm-6 col-3">
@@ -183,89 +195,36 @@
 
           <div class="form-group row" style="margin-top: 10px;">
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary" value="Process file">Process file</button>
+              <button type="submit" class="btn btn-primary" value="Process file">
+                <span id="spinner" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
+                Process file
+              </button>
             </div>
           </div>
         </div>
 
       </form>
     </div>
-    
-    <footer class="container py-5">
-      <small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
-        Supplement of <em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85</em></small>
-    </footer>
-
   </div>
+  <footer class="py-3">
+    <div class="container ">
+      <div class="row">
+        <!-- col-md-4 col -->
+        <div class="col-md-4 col-sm-12">
+          <p class="text-muted"><small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
+            Supplement of <em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85.</em></small></p>
+        </div>
+      </div>      
+    </div>    
+  </footer>
 
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" charset="utf-8"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script type="text/javascript">
 
-    document.getElementById('fileForm').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent form submission
-      loadFile(); // Call the loadFile function
-    });
-
-    function loadFile() {
-      var input = document.getElementById('dataFile');
-      var file = input.files[0];
-
-      var reader = new FileReader();
-      reader.onload = function() {
-        var contents = reader.result;
-        processCSV(contents);
-      };
-      reader.readAsText(file);
-    }
-
-    function processCSV(contents) {
-      var rows = contents.split('\n');
-      var result = '';
-
-      // Process each row and build the result string
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        // if the row is not empty
-        if (row.length > 0) {
-          // Split the row into columns
-          var columns = row.split(',');
-          // Do something with the columns
-          var processedColumns = processColumns(columns);
-          // Append the processed columns to the result string
-          result += processedColumns.join(',') + '\n';
-        }        
-      }
-
-      // Create a Blob object from the result string
-      var blob = new Blob([result], { type: 'text/csv' });
-
-      // Create a link element to download the CSV file
-      var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = 'processed_data.csv';
-      link.click();
-      // remove the link element
-      link.remove();
-    }
-
-    function processColumns(columns) {
-      // Do something with the columns
-      // age,education_years,sex,CWIT1,CWIT2,CWIT3,CWIT4,CWIT3_errors,CWIT4_errors
-      var age = columns[1];
-      var edu = columns[2];
-      var sex = columns[3];
-      var cwit1 = columns[4];
-      var cwit2 = columns[5];
-      var cwit3 = columns[6];
-      var cwit4 = columns[7];
-      var cwit3_errors = columns[8];
-      var cwit4_errors = columns[9];
-
-      return columns;
-    }
-
-    $('#calc').submit(function() {
+    $('#calc').submit(function(event) {
+      // prevent default action
+      event.preventDefault();
       calculate();
       return false;
     });
@@ -282,6 +241,52 @@
         this.coefs = coefs;
         this.scalingTable = scalingTable;
         this.percentageTable = percentageTable;
+      }
+
+      /**
+       * This function a escaling entry and a rawValue and returns true if the rawValue is in the range of the entry
+       * @param {Array} entry - an array of two elements, the first is the range and the second is the value to return if the rawValue is in the range
+       * @param {Number} rawValue - the raw value to be evaluated
+       * @return {Boolean} - true if the rawValue is in the range of the entry
+       */
+      evaluateScalingEntry(entry, rawValue){
+        if (typeof entry[0] === 'number') {
+          return rawValue == entry[0];
+        } else if (typeof entry[0] === 'string'){
+          var test = entry[0];
+          // if there is a - in the string then it is a range
+          if (test.indexOf('-') > -1) {
+            var range = test.split('-');
+            return rawValue >= range[0] && rawValue <= range[1];
+          } 
+          // if there is a '>=' in the string then it is the upper cutoff
+          else if (test.indexOf('>=') > -1) {
+            var top = test.split('>=')[1];
+            return rawValue >= top;
+          }
+          // if there is a '<=' in the string then it is the lower cutoff
+          else if (test.indexOf('<=') > -1) {
+            var bottom = test.split('<=')[1];
+            return rawValue <= bottom;
+          }
+        }
+      }
+
+      /**
+       * This function takes in a raw value and returns the scaled value
+       * 
+       * @param {number} rawValue - the raw value to be scaled
+       * @param {array} scalingTable - the scaling table to use
+       * @returns {number} - the scaled value
+       */
+      scaleValue(value) {
+        // Find the index of the input value in the lookup table
+        var i = 0;
+        while (i < this.scalingTable.length - 1 && !this.evaluateScalingEntry(this.scalingTable[i], value)) {
+          i++;
+        }
+        var scaled = this.scalingTable[i][1];
+        return scaled;
       }
 
       calculateScores(age, edu, sex, test_raw){
@@ -306,7 +311,7 @@
         }
 
         // final predicted score
-        var scaled = scaleValue(test_raw, this.scalingTable);
+        var scaled = this.scaleValue(test_raw, this.scalingTable);
         var predicted = this.intercept + coefSum;
         var cwit1Dif = scaled - predicted;
         var zscore = (scaled - predicted) / this.sd;
@@ -320,7 +325,7 @@
 
       get_percentage(errors){
 
-        // if this.percentages is undefined return 100
+        // if this.percentages is undefined return undefined
         if (!this.percentageTable) {
           return undefined;
         }
@@ -337,7 +342,6 @@
 
     }
 
-    
     // regression data structures
     var regression = {
       'mean_age' : 46.165183,
@@ -507,117 +511,10 @@
     }
 
     /**
-     * This function a escaling entry and a rawValue and returns true if the rawValue is in the range of the entry
-     * @param {Array} entry - an array of two elements, the first is the range and the second is the value to return if the rawValue is in the range
-     * @param {Number} rawValue - the raw value to be evaluated
-     * @return {Boolean} - true if the rawValue is in the range of the entry
+     * Sets the tscore value to the element. If the tscore is 80 or 20, it adds the >= or <= sign to the value.
+     * @param {object} element - the element to set the value to
+     * @param {number} tscore - the tscore value
      */
-    function evaluateScalingEntry(entry, rawValue){
-      if (typeof entry[0] === 'number') {
-        return rawValue == entry[0];
-      } else if (typeof entry[0] === 'string'){
-        var test = entry[0];
-        // if there is a - in the string then it is a range
-        if (test.indexOf('-') > -1) {
-          var range = test.split('-');
-          return rawValue >= range[0] && rawValue <= range[1];
-        } 
-        // if there is a '>=' in the string then it is the upper cutoff
-        else if (test.indexOf('>=') > -1) {
-          var top = test.split('>=')[1];
-          return rawValue >= top;
-        }
-        // if there is a '<=' in the string then it is the lower cutoff
-        else if (test.indexOf('<=') > -1) {
-          var bottom = test.split('<=')[1];
-          return rawValue <= bottom;
-        }
-      }
-    }
-
-    /**
-     * This function takes in a raw value and a scaling table and returns the scaled value
-     * 
-     * @param {number} rawValue - the raw value to be scaled
-     * @param {array} scalingTable - the scaling table to use
-     * @returns {number} - the scaled value
-     */
-    function scaleValue(value, lookupTable) {
-      // Find the index of the input value in the lookup table
-      var i = 0;
-      while (i < lookupTable.length - 1 && !evaluateScalingEntry(lookupTable[i], value)) {
-        i++;
-      }
-      var scaled = lookupTable[i][1];
-      return scaled;
-    }
-
-    /**
-     * This function takes the demographic coefs of the test and returns the sum of the product of the demographic data and the regression coefficients
-     * @param {Object} demographic - the demographic data
-     * @return {Number} - the sum of the product of the demographic data and the regression coefficients
-     */
-    function sumProduct(demographic) {
-      var sum = 0;
-      for (var key in demographic) {
-        if (demographic.hasOwnProperty(key)) {
-          var coef = demographic[key];
-          // strip any number from the key string
-          var element_key = key.replace(/\d+/g, '');
-          var elem = document.getElementsByName(element_key)[0];
-
-          if(elem !== undefined){
-            var elemVal = parseInt(elem.value);
-            // if the item key is not sex, then it is an age or education item
-            if(key != 'sex'){
-              mean = regression['mean_' + element_key];
-              // mean center the value
-              elemVal = elemVal - mean;
-              if(key == 'age2'){
-                // in the case of age2, it is the square the value
-                elemVal = elemVal * elemVal;
-              }
-            } else{
-              // using jquery, get the value of the radio button with the same name attribute as the key
-              elemVal = $('input[name="' + key + '"]:checked').val();
-
-
-            }
-            
-            sum += coef * elemVal;
-            
-          }
-          
-        }
-      }
-      return sum;
-    }
-
-    function calculate_tscore(elem) {
-      if (this.value !== '') {
-        var value = parseInt(this.value);
-        var cwit = $(this).data('cwit');
-        var cwit_coefs = regression[cwit];
-        var demographic = cwit_coefs.demographic_coefs;
-        var scalingTable = cwit_coefs.scalingTable;
-        var scaledScore = scaleValue(value, scalingTable);
-        // iterate over demographic coefficients, for each item get the value of the HTML element having the same name attribute. 
-        // to obtain the sum the product of each item value and the retrieved HTML element value.
-        var sum = sumProduct(demographic);
-        // predicted value by regression
-        var predicted = cwit_coefs.intercept + sum;
-        // difference between scaled score and predicted value
-        var dif = scaledScore - predicted;
-        // z-score and t-score
-        var zscore = (scaledScore - predicted) / cwit_coefs.sd;
-        var tscore = Math.max(t_score_min, Math.min(t_score_max, Math.round(zscore * 10 + 50)));
-        console.log(cwit + '==> predicted=' + predicted + ' dif='+dif + ' zscore='+zscore + ' tscore='+tscore);
-
-        
-        $('#t-score-' + cwit).val(tscore);
-      }
-    }   
-
     function set_tscore(element, tscore) {
       if (!Number.isNaN(tscore)) {
         // if tscore == 80 add >= to the value
@@ -634,17 +531,9 @@
       }
     }
 
-    function get_percentage(raw, percentages){
-      var error = 100;
-      var i = 0;
-
-      while (i < percentages.length - 1 && raw != percentages[i][0]) {
-        i++;
-        error = percentages[i][1];
-      }
-      return error;
-    }
-
+    /**
+     * Calculates the errors for the CWIT3 and CWIT4 tests and sets the value to the element.
+     */
     function calculate_errors(){
       tests = ['3', '4'];
       for(var i = 0; i < tests.length; i++){
@@ -655,145 +544,35 @@
         var elem = document.getElementById('error-cwit' + test);
         if (elem.value !== '') {
           var elemVal = parseInt(elem.value);
-          // var errors = regression['cwit' + test].errors;
-          // var error = get_percentage(elemVal, errors);
           var error = cwitObj.get_percentage(elemVal);
           $('#percentage-cwit' + test).val(error);
         }
       }
-    }
-
-    function calculateCWIT1Tscore() {
-      // CWIT 1 
-      var cwit1 = document.getElementById('raw-cwit1');
-      var cwit_coefs = regression['cwit1'];
-      var demographic_coefs = cwit_coefs.demographic_coefs;
-      var scalingTable = cwit_coefs.scalingTable;
-      if (cwit1.value !== '') {
-        var age_centered = document.getElementById('age').value - regression.mean_age;
-        var age_centered_2 = age_centered * age_centered;
-        var edu_centered = document.getElementById('edu').value - regression.mean_edu;
-        var sex = parseInt($('input[name="sex"]:checked').val());
-
-        var b_age = demographic_coefs.age;
-        var b_age_2 = demographic_coefs.age2;
-        var b_sex = demographic_coefs.sex;
-        var sd = cwit_coefs.sd;
-
-        var cwit1Val = parseInt(cwit1.value);
-        var cwit1SD = cwit_coefs.sd;
-        var cwit1Scaled = scaleValue(cwit1Val, scalingTable);
-        var cwit1Predicted = cwit_coefs.intercept + (age_centered * demographic_coefs.age) + (age_centered_2 * b_age_2) + (sex * demographic_coefs.sex);
-        var cwit1Dif = cwit1Scaled - cwit1Predicted;
-        var cwit1Zscore = (cwit1Scaled - cwit1Predicted) / sd;
-        var cwit1Tscore = Math.max(t_score_min, Math.min(t_score_max, cwit1Zscore * 10 + 50));
-        set_tscore(document.getElementById('t-score-cwit1'), cwit1Tscore);
-        
-        
-      }
-    }
-
-    function calculateCWIT2Tscore(){
-      // CWIT 2
-      var cwit2 = document.getElementById('raw-cwit2');
-      
-      if (cwit2.value !== ''){
-        var cwit_coefs = regression['cwit2'];
-        var demographic_coefs = cwit_coefs.demographic_coefs;
-        var scalingTable = cwit_coefs.scalingTable;
-        var age_centered = document.getElementById('age').value - regression.mean_age;
-        var age_centered_2 = age_centered * age_centered;
-        
-
-        var b_age = demographic_coefs.age;
-        var b_age_2 = demographic_coefs.age2;
-        var sd = cwit_coefs.sd;
-
-        var cwit2Val = parseInt(cwit2.value);
-        var cwit2SD = cwit_coefs.sd;
-        var cwit2Scaled = scaleValue(cwit2Val, scalingTable);
-        var cwit2Predicted = cwit_coefs.intercept + (age_centered * b_age) + (age_centered_2 * b_age_2);
-        var cwit2Dif = cwit2Scaled - cwit2Predicted;
-        var cwit2Zscore = (cwit2Scaled - cwit2Predicted) / sd;
-        var cwit2Tscore = Math.max(t_score_min, Math.min(t_score_max, cwit2Zscore * 10 + 50));
-        set_tscore(document.getElementById('t-score-cwit2'), cwit2Tscore);
-      }
-    }
-
-    function calculateCWIT3Tscore(){
-      // CWIT 3
-      var cwit3 = document.getElementById('raw-cwit3');
-      
-      if (cwit3.value !== ''){
-        var cwit_coefs = regression['cwit3'];
-        var demographic_coefs = cwit_coefs.demographic_coefs;
-        var scalingTable = cwit_coefs.scalingTable;
-        var age_centered = document.getElementById('age').value - regression.mean_age;
-        var age_centered_2 = age_centered * age_centered;
-        var edu_centered = document.getElementById('edu').value - regression.mean_edu;
-        var sex = parseInt($('input[name="sex"]:checked').val());
-
-        var b_age = demographic_coefs.age;
-        var b_age_2 = demographic_coefs.age2;
-        var b_sex = demographic_coefs.sex;
-        var b_edu = demographic_coefs.edu;
-
-        var sd = cwit_coefs.sd;
-        var cwit3Val = parseInt(cwit3.value);
-        var cwit3SD = cwit_coefs.sd;
-        var cwit3Scaled = scaleValue(cwit3Val, scalingTable);
-        var cwit3Predicted = cwit_coefs.intercept + (age_centered * b_age) + (age_centered_2 * b_age_2) + (sex * b_sex) + (edu_centered * b_edu);
-        var cwit3Dif = cwit3Scaled - cwit3Predicted;
-        var cwit3Zscore = (cwit3Scaled - cwit3Predicted) / sd;
-        var cwit3Tscore = Math.max(t_score_min, Math.min(t_score_max, cwit3Zscore * 10 + 50));
-        set_tscore(document.getElementById('t-score-cwit3'), cwit3Tscore);
-      }
-    }
-
-    function calculateCWIT4Tscore(){
-      // CWIT 4
-      var cwit4 = document.getElementById('raw-cwit4');
-      
-      if (cwit4.value !== ''){
-        var cwit_coefs = regression['cwit4'];
-        var demographic_coefs = cwit_coefs.demographic_coefs;
-        var scalingTable = cwit_coefs.scalingTable;
-        var age_centered = document.getElementById('age').value - regression.mean_age;
-        var age_centered_2 = age_centered * age_centered;
-        var edu_centered = document.getElementById('edu').value - regression.mean_edu;
-
-        var b_age = demographic_coefs.age;
-        var b_age_2 = demographic_coefs.age2;
-        var b_edu = demographic_coefs.edu;
-        var sd = cwit_coefs.sd;
-
-        var cwit4Val = parseInt(cwit4.value);
-        var cwit4SD = cwit_coefs.sd;
-        var cwit4Scaled = scaleValue(cwit4Val, scalingTable);
-        var cwit4Predicted = cwit_coefs.intercept + (age_centered * b_age) + (age_centered_2 * b_age_2) + (edu_centered * b_edu);
-        var cwit4Dif = cwit4Scaled - cwit4Predicted;
-        var cwit4Zscore = (cwit4Scaled - cwit4Predicted) / sd;
-        var cwit4Tscore = Math.max(t_score_min, Math.min(t_score_max, cwit4Zscore * 10 + 50));
-        set_tscore(document.getElementById('t-score-cwit4'), cwit4Tscore);
-      }
-    }
-
-   
-
+    }   
+    /**
+     * For a given CWIT test, calculates the tscore and zscore and sets the values to the elements.
+     * @param {number} age - the age value
+     * @param {number} edu - the education value
+     * @param {sex} sex - the sex value
+     * @param {string} cwitName - the name of the CWIT test
+     */
     function calculateTest(age, edu, sex, cwitName) {
-        var cwit = document.getElementById('raw-' + cwitName);
-        
-        var cwitObj = cwitTests[cwitName];
-        if (cwit.value !== ''){
-          var cwitVal = parseInt(cwit.value);
-          var scores = cwitObj.calculateScores(age, edu, sex, cwitVal);
-          set_tscore(document.getElementById('t-score-' + cwitName), scores.tscore);
-          document.getElementById('z-score-' + cwitName).value =  scores.zscore;
-        }
+      var cwit = document.getElementById('raw-' + cwitName);
+      
+      var cwitObj = cwitTests[cwitName];
+      if (cwit.value !== ''){
+        var cwitVal = parseInt(cwit.value);
+        var scores = cwitObj.calculateScores(age, edu, sex, cwitVal);
+        set_tscore(document.getElementById('t-score-' + cwitName), scores.tscore);
+        document.getElementById('z-score-' + cwitName).value =  scores.zscore;
       }
+    }
 
+    /**
+     * Calculates the tscore, zscore and cumulative percentage for all the CWIT tests. 
+     */
     function calculate() {
-      // $('.raw').each(calculate_tscore);
+
       var age = parseInt(document.getElementById('age').value);
       var edu = parseInt(document.getElementById('edu').value);
       var sex = parseInt($('input[name="sex"]:checked').val());
@@ -805,6 +584,162 @@
       
       calculate_errors();
     }
+
+    // ***** BULK UPLOAD *****
+    const header = 'subject,age,education_years,sex,CWIT1,CWIT2,CWIT3,CWIT4,CWIT3_errors,CWIT4_errors,CWIT1_tscore,CWIT2_tscore,CWIT3_tscore,CWIT4_tscore,CWIT1_zscore,CWIT2_zscore,CWIT3_zscore,CWIT4_zscore,CWIT3_percentage,CWIT4_percentage\n';
+
+    document.getElementById('fileForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+      loadFile(); // Call the loadFile function
+    });
+
+    /**
+     * Shows or hide the spinner in the file process button.
+     * @param {boolean} show - true to show the spinner, false to hide it
+     */
+    function showHideSpinner(show) {
+      if (show) {
+        $('#spinner').removeClass('visually-hidden');
+      } else {
+        $('#spinner').addClass('visually-hidden');
+      }
+    }
+
+    /**
+     * Loads the file and calls the processCSV function for each row.
+     */
+    function loadFile() {
+      var input = document.getElementById('dataFile');
+      // if there are files 
+      if (input.files.length > 0) {
+        // get the first file
+        var file = input.files[0];
+        // if the file is a csv file
+        if (file.type == 'text/csv') {
+          // read the file
+          var reader = new FileReader();
+          reader.onload = function() {
+            var contents = reader.result;
+            showHideSpinner(true);
+            try {
+              processCSV(contents);
+            } catch (error) {
+              console.log(error);
+              alert('An error occured while processing the file. Please review the file and try again.');
+            }
+            showHideSpinner(false);        
+          };
+          reader.readAsText(file);
+        } else {
+          alert('Please select a CSV file');
+        }
+      } else {
+        alert('Please select a file');
+      }
+    }
+
+    /**
+     * Processes the columns of the CSV file, creates the final data file and downloads it.
+     * @param {string} contents - row string
+     */
+    function processCSV(contents) {
+      var rows = contents.split('\n');
+      var result = '';
+
+      // Process each row (ignoring the header) and build the result string
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        // if the row is not empty
+        if (row.length > 0) {
+          // remove any whitespace from the row
+          row = row.trim();
+          // Split the row into columns
+          var columns = row.split(',');
+          // remove any whitespace from the columns
+          
+          // Process the columns
+          var processedColumns = processColumns(columns);
+          // Append the processed columns to the result string
+          result += processedColumns.join(',') + '\n';
+        }        
+      }
+      // set header 
+      result = header + result;
+      // Create a Blob object from the result string
+      var blob = new Blob([result], { type: 'text/csv' });
+
+      // Create a link element to download the CSV file
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'CWIT_scores.csv';
+      link.click();
+      // remove the link element
+      link.remove();
+    }
+
+    /**
+     * Transforms different possible values for sex into 0 (male) or 1 (femal) integers.
+     * @param {string} sex 
+     */
+    function parseSex(sex){
+      if (sex == 'Male' || sex == 'male'){
+        return 0
+      } else if(sex == 'Female' || sex == 'female'){
+        return 1
+      } else if (sex == '0' || sex == '1'){
+        return parseInt(sex);
+      }
+      else {
+        return ''
+      }
+    }
+
+    /**
+     * Processes the columns of the CSV file, and returns the calculated scores for each CWIT test in the array, 
+     * @param {string[]} columns - array of columns
+     */
+    function processColumns(columns) {
+      var subject = columns[0];
+      var age = columns[1];
+      // if the age is not empty parse it to an integer
+      if (age !== '') {
+        age = parseInt(age);
+      }
+      var edu = columns[2];
+      // if the education is not empty parse it to an integer
+      if (edu !== '') {
+        edu = parseInt(edu);
+      }
+      var sex = columns[3];
+      sex = parseSex(sex)
+      var cwit1 = columns[4];
+      var cwit2 = columns[5];
+      var cwit3 = columns[6];
+      var cwit4 = columns[7];
+      var cwit3_errors = columns[8];
+      var cwit4_errors = columns[9];
+      // if the raw scores are not empty calculate the z and tscores
+      var cwit1_scores = cwit1 !== '' ? cwit1Obj.calculateScores(age, edu, sex, parseInt(cwit1)) : {tscore: '', zscore: ''};
+      var cwit2_scores = cwit2 !== '' ? cwit2Obj.calculateScores(age, edu, sex, parseInt(cwit2)) : {tscore: '', zscore: ''};
+      var cwit3_scores = cwit3 !== '' ? cwit3Obj.calculateScores(age, edu, sex, parseInt(cwit3)) : {tscore: '', zscore: ''};
+      var cwit4_scores = cwit4 !== '' ? cwit4Obj.calculateScores(age, edu, sex, parseInt(cwit4)) : {tscore: '', zscore: ''};
+      var CWIT3_percentage = cwit3_errors !== '' ? cwit3Obj.get_percentage(cwit3_errors) : '';
+      var CWIT4_percentage = cwit4_errors !== '' ? cwit4Obj.get_percentage(cwit4_errors) : '';
+
+      columns[10] = cwit1_scores.tscore;
+      columns[11] = cwit2_scores.tscore;
+      columns[12] = cwit3_scores.tscore;
+      columns[13] = cwit4_scores.tscore;
+      columns[14] = cwit1_scores.zscore;
+      columns[15] = cwit2_scores.zscore;
+      columns[16] = cwit3_scores.zscore;
+      columns[17] = cwit4_scores.zscore;
+      columns[18] = CWIT3_percentage;
+      columns[19] = CWIT4_percentage;
+      
+      return columns;
+    }
+
   </script>
 </body>
 
