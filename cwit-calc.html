@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>CWIT Norm Calculator</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
   <style media="screen">
     .calc {
       padding: 25px;
@@ -40,29 +42,29 @@
         <div class="measures">
           <!-- Demographics -->
           <div class="form-group row">
-            <label for="age1" class="col-sm-2 col-form-label">Age</label>
+            <label class="col-sm-2 col-form-label">Age</label>
             <div class="col-sm-4 col-4">
               <input type="number" class="form-control form-control-sm" name="age" id="age" min="20" max="85" placeholder="20 - 85" required />
             </div>
           </div>
           <div class="form-group row">
-            <label for="years1" class="col-sm-2 col-form-label">Years of education</label>
+            <label class="col-sm-2 col-form-label">Years of education</label>
             <div class="col-sm-4">
               <input type="number" class="form-control form-control-sm" name="edu" id="edu" min="7" max="23" placeholder="7 - 23" required>
             </div>
           </div>
           <div class="form-group row">
-            <label for="gender" class="col-sm-2 col-form-label">Sex</label>
+            <label class="col-sm-2 col-form-label">Sex</label>
             <div class="col-sm-4">
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="sex" id="radio-male" value="0" checked>
-                <label class="form-check-label" for="radio-male">
+                <label class="form-check-label">
                   Male
                 </label>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="sex" id="radio-female" value="1">
-                <label class="form-check-label" for="radio-female">
+                <label class="form-check-label">
                   Female
                 </label>
               </div>
@@ -82,13 +84,13 @@
           <div class="form-group row">
             <div class="col-sm-1 col-3">
             </div>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Raw score</label>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Z-Score</label>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">T-Score</label>
+            <label class="col-sm-2 col-3 col-form-label">Raw score</label>
+            <label class="col-sm-2 col-3 col-form-label">Z-Score</label>
+            <label class="col-sm-2 col-3 col-form-label">T-Score</label>
           </div>
 
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 1</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 1</label>
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm raw" data-cwit="cwit1" id="raw-cwit1">
             </div>
@@ -101,7 +103,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 2</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 2</label>
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm raw" id="raw-cwit2" data-cwit="cwit2">
             </div>
@@ -114,7 +116,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 3</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 3</label>
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm raw" id="raw-cwit3" data-cwit="cwit3">
             </div>
@@ -127,7 +129,7 @@
             
           </div>
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 4</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 4</label>
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm raw" id="raw-cwit4" data-cwit="cwit4">
             </div>
@@ -146,11 +148,11 @@
           <div class="form-group row">
             <div class="col-sm-1 col-3">
             </div>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">No. of errors</label>
-            <label for="raw-score-a" class="col-sm-2 col-3 col-form-label">Cumulative %</label>
+            <label class="col-sm-2 col-3 col-form-label">No. of errors</label>
+            <label class="col-sm-2 col-3 col-form-label">Cumulative %</label>
           </div>
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 3</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 3</label>
             
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm error" id="error-cwit3">
@@ -160,7 +162,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="raw-score-a" class="col-sm-1 col-3 col-form-label">CWIT 4</label>
+            <label class="col-sm-1 col-3 col-form-label">CWIT 4</label>
             
             <div class="col-sm-2 col-3">
               <input type="number" class="form-control form-control-sm error" id="error-cwit4">
@@ -170,6 +172,52 @@
             </div>
           </div>
         </div>
+
+        <div class="measures" id="derived-measures">
+          <h5>Derived measures</h5>
+
+          <div class="form-group row">
+            <label class="col-sm-1 col-1 col-form-label text-muted">Adj. by</label>
+            <label class="col-sm-2 col-4 col-form-label">CWIT 1</label>
+            <label class="col-sm-2 col-4 col-form-label">CWIT 2</label>
+            <label class="col-sm-2 col-4 col-form-label">CWIT 1&2</label>
+            <label class="col-sm-2 col-4 col-form-label">CWIT 3</label>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-1 col-3 col-form-label">CWIT 3</label>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit3-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit3-2" tabindex="-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit3-1-2" tabindex="-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3"></div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-1 col-3 col-form-label">CWIT 4</label>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit4-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit4-2" tabindex="-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit4-1-2" tabindex="-1" readonly>
+            </div>
+            <div class="col-sm-2 col-3">
+              <input type="text" class="form-control form-control-sm derived" id="cwit4-3" tabindex="-1" readonly>
+            </div>
+            
+          </div>
+
+        </div>
+
+
       </form>
   
       
@@ -182,12 +230,12 @@
           <h5>Bulk processing</h5> <i class="fa-regular fa-circle-question"></i>
           
           <div>
-            <p class="text-secondary">Process multiple test results stored in a comma separated file (CSV). Use <a href="cwit_template.csv">this template</a> to follow the expected format.</p>
+            <p class="text-secondary">Process multiple test results stored in a comma separated file (CSV). Use <a id="download-link" href="#">this template</a> to follow the expected format.</p>
           </div>
           
           
           <div class="form-group row">
-            <label for="formFile" class="form-label">CSV data file</label>
+            <label class="form-label">CSV data file</label>
             <div class="col-sm-6 col-3">
               <input class="form-control" type="file" id="dataFile">
             </div>
@@ -212,7 +260,7 @@
         <p class="col-md-4 mb-0"></p>
         <!-- col-md-4 col -->
         <div class="col-md-4 col-sm-12">
-          <p class="text-muted"><small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
+          <p class="text-light"><small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
             Supplement of <em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85.</em></small></p>
         </div>
         <p class="col-md-4 mb-0"></p>
@@ -221,7 +269,8 @@
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" charset="utf-8"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   <script type="text/javascript">
 
     $('#calc').submit(function(event) {
@@ -237,12 +286,14 @@
     const mean_edu = 15.456973;
 
     class CWITTest{
-      constructor (intercept, coefs, sd, scalingTable, percentageTable) {
+      constructor (testName, intercept, coefs, sd, scalingTable, percentageTable, derived) {
+        this.testName = testName;
         this.intercept = intercept;
         this.sd = sd;
         this.coefs = coefs;
         this.scalingTable = scalingTable;
         this.percentageTable = percentageTable;
+        this.derived = derived;
       }
 
       /**
@@ -323,6 +374,85 @@
           'zscore' : zscore.toFixed(2),
           'tscore' : Math.round(tscore)          
         }
+      }
+
+      calculateDerivedDemographics(age, edu, sex, coefs){
+        
+        var age_centered = age - mean_age;
+        var age_centered_2 = age_centered * age_centered;
+        var edu_centered = edu - mean_edu;
+
+        var b_age = coefs.age;
+        var b_age_2 = coefs.age2;
+        var b_edu = coefs.edu;
+        var b_sex = coefs.sex;
+
+        var coefSum = (b_age * age_centered) + (b_age_2 * age_centered_2) + (b_edu * edu_centered);      
+        // if b_sex is not undefined add to the sum
+        if (b_sex) {
+          coefSum += b_sex * sex;
+        }
+        return coefSum;
+      }
+
+      calculateDerivedSingleTest(cwitObj, age, edu, sex, targetCoefs, test_adjust, test_raw){
+        var coefSum = this.calculateDerivedDemographics(age, edu, sex, targetCoefs);
+        var test_scaled = cwitObj.scaleValue(test_adjust);
+        coefSum += test_scaled * targetCoefs.test;
+        var scaled = this.scaleValue(test_raw);
+        var predicted = targetCoefs.intercept + coefSum;
+        var diff = scaled - predicted;
+        var zscore = diff / targetCoefs.sd;
+        var scaled_score = zscore * 3 + 10
+        return scaled_score;
+      }
+
+      calculateDerivedCombinedTest(cwitObj1, cwitObj2, age, edu, sex, targetCoefs, test_adjust_1, test_adjust_2, test_raw){
+        var coefSum = this.calculateDerivedDemographics(age, edu, sex, targetCoefs);
+        var test_1_scaled = cwitObj1.scaleValue(test_adjust_1);
+        var test_2_scaled = cwitObj2.scaleValue(test_adjust_2);
+        coefSum += test_1_scaled * targetCoefs.test_1;
+        coefSum += test_2_scaled * targetCoefs.test_2;
+        var scaled = this.scaleValue(test_raw);
+        var predicted = targetCoefs.intercept + coefSum;
+        var diff = scaled - predicted;
+        var zscore = diff / targetCoefs.sd;
+        var scaled_score = zscore * 3 + 10
+        return scaled_score;;
+      }
+
+      calculateDerived(cwit1obj, cwit2obj, cwit3obj, age, edu, sex, cwit_1_raw, cwit_2_raw, cwit_3_raw, test_raw){
+        var derives = {};
+        test_raw = parseInt(test_raw);
+        // calculate adjusted by CWIT_1
+        if (cwit_1_raw !== ""){
+          cwit_1_raw = parseInt(cwit_1_raw);
+          var targetCoefs = this.derived.CWIT_1;
+          var scaled_score = this.calculateDerivedSingleTest(cwit1obj, age, edu, sex, targetCoefs, cwit_1_raw, test_raw);
+          derives.CWIT_1 = scaled_score.toFixed(2);
+        }
+        // calculate adjusted by CWIT_2
+        if (cwit_2_raw !== ""){
+          cwit_2_raw = parseInt(cwit_2_raw);
+          var targetCoefs = this.derived.CWIT_2;
+          var scaled_score = this.calculateDerivedSingleTest(cwit2obj, age, edu, sex, targetCoefs, cwit_2_raw, test_raw);
+          derives.CWIT_2 = scaled_score.toFixed(2);
+        }
+        // calculate adjusted by CWIT_1 and CWIT_2
+        if (cwit_1_raw !== "" && cwit_2_raw !== ""){
+          cwit_1_raw = parseInt(cwit_1_raw);
+          cwit_2_raw = parseInt(cwit_2_raw);
+          var targetCoefs = this.derived.CWIT_1_2;
+          var scale_score = this.calculateDerivedCombinedTest(cwit1obj, cwit2obj, age, edu, sex, targetCoefs, cwit_1_raw, cwit_2_raw, test_raw);
+          derives.CWIT_1_2 = scale_score.toFixed(2);
+        }
+        if (this.testName == "cwit4" && cwit_3_raw !== ""){
+          cwit_3_raw = parseInt(cwit_3_raw);
+          var targetCoefs = this.derived.CWIT_3;
+          var scaled_score = this.calculateDerivedSingleTest(cwit3obj, age, edu, sex, targetCoefs, cwit_3_raw, test_raw);
+          derives.CWIT_3 = scaled_score.toFixed(2);
+        }
+        return derives;
       }
 
       get_percentage(errors){
@@ -450,7 +580,35 @@
                     [9, 0.2],
                     [10, 0.2],
                     [11, 0.1]
-                  ]
+                  ],
+        'derived' : {
+                      'CWIT_1' : {
+                        'intercept' : 3.28,
+                        'age' : -0.045,
+                        'age2' : -0.0006,
+                        'edu': 0.089,
+                        'test' : 0.559,
+                        'sd' : 2.018
+                      },
+                      'CWIT_2' : { 
+                        'intercept' : 4.69,
+                        'age' : -0.065,
+                        'age2' : -0.0008,
+                        'edu' : 0.058,
+                        'sex' : 0.367,
+                        'test' : 0.458,
+                        'sd' : 2.201
+                      },
+                      'CWIT_1_2' : {
+                        'intercept' : 2.792,
+                        'age' : -0.048,
+                        'age2' : -0.0006,
+                        'edu' : 0.079,
+                        'test_1' : 0.448,
+                        'test_2' : 0.177,
+                        'sd' : 1.981
+                      }
+                    }
       },
 
       'cwit4': {
@@ -495,15 +653,53 @@
                     [9, 0.6],
                     [10, 0.6],
                     [11, 0.2]
-                  ]                
+                  ],
+        'derived' : {
+          'CWIT_1' : {
+            'intercept' :	4.70,
+            'age' :	-0.042,
+            'age2' :	-0.001,
+            'edu' : 	0.105,
+            'test' :	0.410,
+            'sd' : 2.31
+          },
+              
+          'CWIT_2' : {
+            'intercept' : 5.096,
+            'age' :	-0.055,
+            'age2' : -0.001,
+            'edu' : 0.080,
+            'test' : 0.416,
+            'sd' : 2.297
+          },
+
+          'CWIT_1_2' : {
+            'intercept' :	3.97,
+            'age' :	-0.046,
+            'age2' :	-0.001,
+            'edu' : 	0.091,
+            'test_1' :	0.240,
+            'test_2' :	0.264,
+            'sd' : 2.237
+          },
+
+          'CWIT_3' : {
+            'intercept' :	4.46,
+            'age' :	-0.018,
+            'age2' :	-0.0008,
+            'edu' : 	0.051,
+            'test' :	0.602,
+            'sd' : 2.064
+          }
+        }                
       },      
     }
 
     // instantiate CWITTest objects
-    const cwit1Obj = new CWITTest(regression.cwit1.intercept, regression.cwit1.demographic_coefs, regression.cwit1.sd, regression.cwit1.scalingTable);
-    const cwit2Obj = new CWITTest(regression.cwit2.intercept, regression.cwit2.demographic_coefs, regression.cwit2.sd, regression.cwit2.scalingTable);
-    const cwit3Obj = new CWITTest(regression.cwit3.intercept, regression.cwit3.demographic_coefs, regression.cwit3.sd, regression.cwit3.scalingTable, regression.cwit3.errors);
-    const cwit4Obj = new CWITTest(regression.cwit4.intercept, regression.cwit4.demographic_coefs, regression.cwit4.sd, regression.cwit4.scalingTable, regression.cwit4.errors);
+    const cwit1Obj = new CWITTest('cwit1', regression.cwit1.intercept, regression.cwit1.demographic_coefs, regression.cwit1.sd, regression.cwit1.scalingTable);
+    const cwit2Obj = new CWITTest('cwit2', regression.cwit2.intercept, regression.cwit2.demographic_coefs, regression.cwit2.sd, regression.cwit2.scalingTable);
+    const cwit3Obj = new CWITTest('cwit3', regression.cwit3.intercept, regression.cwit3.demographic_coefs, regression.cwit3.sd, regression.cwit3.scalingTable, regression.cwit3.errors, regression.cwit3.derived);
+    const cwit4Obj = new CWITTest('cwit4', regression.cwit4.intercept, regression.cwit4.demographic_coefs, regression.cwit4.sd, regression.cwit4.scalingTable, regression.cwit4.errors, regression.cwit4.derived);
     // create an object to hold all the CWITTest objects
     const cwitTests = {
       'cwit1': cwit1Obj,
@@ -533,6 +729,14 @@
       }
     }
 
+    function set_derived(element, derived){
+      if (!Number.isNaN(derived)) {
+        $(element).val(derived);
+      } else {
+        $(element).val('');
+      }
+    }
+
     /**
      * Calculates the errors for the CWIT3 and CWIT4 tests and sets the value to the element.
      */
@@ -551,6 +755,45 @@
         }
       }
     }   
+
+    function calculateDemographics(coefs, age, edu, sex){
+      var age_centered = age - mean_age;
+      var age_centered_2 = age_centered * age_centered;
+      var edu_centered = edu - mean_edu;
+
+      var b_age = coefs.age;
+      var b_age_2 = coefs.age2;
+      var b_edu = coefs.edu;
+      var b_sex = coefs.sex;
+
+      // age coefficient is common to all tests
+      var coefSum = (b_age * age_centered) + (b_age_2 * age_centered_2) + (b_edu * edu_centered);
+      // if edu in coefs is not undefined add to the sum
+      if (b_edu) {
+        coefSum += b_edu * edu_centered;
+      }
+      // if b_sex is not undefined add to the sum
+      if (b_sex) {
+        coefSum += b_sex * sex;
+      }
+    }
+
+    /**
+     * Calculates the derived measures for the CWIT3 and CWIT4 tests and sets the value to the element.
+     */
+    function calculateDerivedMeasures(age, edu, sex){
+      derived_3 = regression.cwit3.derived;
+      derived_4 = regression.cwit4.derived;
+      var cwit_1 = document.getElementById('raw-cwit1');
+      var cwit_2 = document.getElementById('raw-cwit2');
+      var cwit_3 = document.getElementById('raw-cwit3');
+
+      if (cwit_1.value !== ''){
+
+      }
+
+    }
+
     /**
      * For a given CWIT test, calculates the tscore and zscore and sets the values to the elements.
      * @param {number} age - the age value
@@ -570,6 +813,26 @@
       }
     }
 
+    function calculateDerivedMeasures(age, edu, sex){
+      var cwit1raw = document.getElementById('raw-cwit1').value;
+      var cwit2raw = document.getElementById('raw-cwit2').value;
+      var cwit3raw = document.getElementById('raw-cwit3').value;
+      var cwit4raw = document.getElementById('raw-cwit4').value;
+      if (cwit3raw !== ''){
+        var cwit3derived = cwit3Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1raw, cwit2raw, cwit3raw, cwit3raw);
+        set_derived(document.getElementById('cwit3-1'), cwit3derived.CWIT_1);
+        set_derived(document.getElementById('cwit3-2'), cwit3derived.CWIT_2);
+        set_derived(document.getElementById('cwit3-1-2'), cwit3derived.CWIT_1_2);
+      }
+      if (cwit4raw !== ''){
+        var cwit4derived = cwit4Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1raw, cwit2raw, cwit3raw, cwit4raw);
+        set_derived(document.getElementById('cwit4-1'), cwit4derived.CWIT_1);
+        set_derived(document.getElementById('cwit4-2'), cwit4derived.CWIT_2);
+        set_derived(document.getElementById('cwit4-1-2'), cwit4derived.CWIT_1_2);
+        set_derived(document.getElementById('cwit4-3'), cwit4derived.CWIT_3);
+      }
+    }
+
     /**
      * Calculates the tscore, zscore and cumulative percentage for all the CWIT tests. 
      */
@@ -585,10 +848,12 @@
       }
       
       calculate_errors();
+
+      calculateDerivedMeasures(age, edu, sex);
     }
 
     // ***** BULK UPLOAD *****
-    const header = 'subject,age,education_years,sex,CWIT1,CWIT2,CWIT3,CWIT4,CWIT3_errors,CWIT4_errors,CWIT1_tscore,CWIT2_tscore,CWIT3_tscore,CWIT4_tscore,CWIT1_zscore,CWIT2_zscore,CWIT3_zscore,CWIT4_zscore,CWIT3_percentage,CWIT4_percentage\n';
+    const header = 'subject,age,education_years,sex,CWIT1,CWIT2,CWIT3,CWIT4,CWIT3_errors,CWIT4_errors,CWIT1_tscore,CWIT2_tscore,CWIT3_tscore,CWIT4_tscore,CWIT1_zscore,CWIT2_zscore,CWIT3_zscore,CWIT4_zscore,CWIT3_percentage,CWIT4_percentage,CWIT3_1,CWIT3_2,CWIT3_1_2,CWIT4_1,CWIT4_2,CWIT4_1_2,CWIT4_3\n';
 
     document.getElementById('fileForm').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent form submission
@@ -727,6 +992,9 @@
       var cwit4_scores = cwit4 !== '' ? cwit4Obj.calculateScores(age, edu, sex, parseInt(cwit4)) : {tscore: '', zscore: ''};
       var CWIT3_percentage = cwit3_errors !== '' ? cwit3Obj.get_percentage(cwit3_errors) : '';
       var CWIT4_percentage = cwit4_errors !== '' ? cwit4Obj.get_percentage(cwit4_errors) : '';
+      // calculate the derived measures for CWIT3 and CWIT4
+      var cwit3_derived = cwit3 !== '' ? cwit3Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit3) : {CWIT_1: '', CWIT_2: '', CWIT_1_2: ''};
+      var cwit4_derived = cwit4 !== '' ? cwit3Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit4) : {CWIT_1: '', CWIT_2: '', CWIT_1_2: '', CWIT_3: ''};
 
       columns[10] = cwit1_scores.tscore;
       columns[11] = cwit2_scores.tscore;
@@ -738,11 +1006,30 @@
       columns[17] = cwit4_scores.zscore;
       columns[18] = CWIT3_percentage;
       columns[19] = CWIT4_percentage;
+      columns[20] = cwit3_derived.CWIT_1;
+      columns[21] = cwit3_derived.CWIT_2;
+      columns[22] = cwit3_derived.CWIT_1_2;
+      columns[23] = cwit4_derived.CWIT_1;
+      columns[24] = cwit4_derived.CWIT_2;
+      columns[25] = cwit4_derived.CWIT_1_2;
+      columns[26] = cwit4_derived.CWIT_3;
       
       return columns;
     }
 
   </script>
+
+  <script>
+  window.onload = function() {
+    var csvContent = "subject,age,education_years,sex,CWIT1,CWIT2,CWIT3,CWIT4,CWIT3_errors,CWIT4_errors\n"; // CSV header
+    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var link = document.getElementById("download-link");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "cwit_template.csv");
+  }
+  </script>
+
 </body>
 
 </html>
