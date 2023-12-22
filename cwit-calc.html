@@ -404,7 +404,7 @@
         var diff = scaled - predicted;
         var zscore = diff / targetCoefs.sd;
         var scaled_score = zscore * 3 + 10
-        return scaled_score;
+        return Math.round(scaled_score);
       }
 
       calculateDerivedCombinedTest(cwitObj1, cwitObj2, age, edu, sex, targetCoefs, test_adjust_1, test_adjust_2, test_raw){
@@ -418,7 +418,7 @@
         var diff = scaled - predicted;
         var zscore = diff / targetCoefs.sd;
         var scaled_score = zscore * 3 + 10
-        return scaled_score;;
+        return Math.round(scaled_score);
       }
 
       calculateDerived(cwit1obj, cwit2obj, cwit3obj, age, edu, sex, cwit_1_raw, cwit_2_raw, cwit_3_raw, test_raw){
@@ -429,14 +429,14 @@
           cwit_1_raw = parseInt(cwit_1_raw);
           var targetCoefs = this.derived.CWIT_1;
           var scaled_score = this.calculateDerivedSingleTest(cwit1obj, age, edu, sex, targetCoefs, cwit_1_raw, test_raw);
-          derives.CWIT_1 = scaled_score.toFixed(2);
+          derives.CWIT_1 = scaled_score;
         }
         // calculate adjusted by CWIT_2
         if (cwit_2_raw !== ""){
           cwit_2_raw = parseInt(cwit_2_raw);
           var targetCoefs = this.derived.CWIT_2;
           var scaled_score = this.calculateDerivedSingleTest(cwit2obj, age, edu, sex, targetCoefs, cwit_2_raw, test_raw);
-          derives.CWIT_2 = scaled_score.toFixed(2);
+          derives.CWIT_2 = scaled_score;
         }
         // calculate adjusted by CWIT_1 and CWIT_2
         if (cwit_1_raw !== "" && cwit_2_raw !== ""){
@@ -444,13 +444,13 @@
           cwit_2_raw = parseInt(cwit_2_raw);
           var targetCoefs = this.derived.CWIT_1_2;
           var scale_score = this.calculateDerivedCombinedTest(cwit1obj, cwit2obj, age, edu, sex, targetCoefs, cwit_1_raw, cwit_2_raw, test_raw);
-          derives.CWIT_1_2 = scale_score.toFixed(2);
+          derives.CWIT_1_2 = scale_score;
         }
         if (this.testName == "cwit4" && cwit_3_raw !== ""){
           cwit_3_raw = parseInt(cwit_3_raw);
           var targetCoefs = this.derived.CWIT_3;
           var scaled_score = this.calculateDerivedSingleTest(cwit3obj, age, edu, sex, targetCoefs, cwit_3_raw, test_raw);
-          derives.CWIT_3 = scaled_score.toFixed(2);
+          derives.CWIT_3 = scaled_score;
         }
         return derives;
       }
@@ -994,7 +994,7 @@
       var CWIT4_percentage = cwit4_errors !== '' ? cwit4Obj.get_percentage(cwit4_errors) : '';
       // calculate the derived measures for CWIT3 and CWIT4
       var cwit3_derived = cwit3 !== '' ? cwit3Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit3) : {CWIT_1: '', CWIT_2: '', CWIT_1_2: ''};
-      var cwit4_derived = cwit4 !== '' ? cwit3Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit4) : {CWIT_1: '', CWIT_2: '', CWIT_1_2: '', CWIT_3: ''};
+      var cwit4_derived = cwit4 !== '' ? cwit4Obj.calculateDerived(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit4) : {CWIT_1: '', CWIT_2: '', CWIT_1_2: '', CWIT_3: ''};
 
       columns[10] = cwit1_scores.tscore;
       columns[11] = cwit2_scores.tscore;
