@@ -342,6 +342,12 @@
         return scaled;
       }
 
+      zscore(value, predicted){
+        var diff = value - predicted;
+        var zscore = diff / this.sd;
+        return zscore;
+      }
+
       calculateScores(age, edu, sex, test_raw){
         var age_centered = age - mean_age;
         var age_centered_2 = age_centered * age_centered;
@@ -367,7 +373,8 @@
         var scaled = this.scaleValue(test_raw, this.scalingTable);
         var predicted = this.intercept + coefSum;
         var cwit1Dif = scaled - predicted;
-        var zscore = (scaled - predicted) / this.sd;
+        // var zscore = (scaled - predicted) / this.sd;
+        var zscore = this.zscore(scaled, predicted);
         var tscore = Math.max(t_score_min, Math.min(t_score_max, zscore * 10 + 50));
 
         return {
@@ -380,14 +387,14 @@
         
         var age_centered = age - mean_age;
         var age_centered_2 = age_centered * age_centered;
-        var edu_centered = edu - mean_edu;
+        // var edu_centered = edu - mean_edu;
 
         var b_age = coefs.age;
         var b_age_2 = coefs.age2;
         var b_edu = coefs.edu;
         var b_sex = coefs.sex;
 
-        var coefSum = (b_age * age_centered) + (b_age_2 * age_centered_2) + (b_edu * edu_centered);      
+        var coefSum = (b_age * age_centered) + (b_age_2 * age_centered_2) + (b_edu * edu);      
         // if b_sex is not undefined add to the sum
         if (b_sex) {
           coefSum += b_sex * sex;
@@ -399,12 +406,13 @@
         var coefSum = this.calculateDerivedDemographics(age, edu, sex, targetCoefs);
         var test_scaled = cwitObj.scaleValue(test_adjust);
         coefSum += test_scaled * targetCoefs.test;
-        var scaled = this.scaleValue(test_raw);
         var predicted = targetCoefs.intercept + coefSum;
+        var scaled = this.scaleValue(test_raw);        
         var diff = scaled - predicted;
         var zscore = diff / targetCoefs.sd;
         var scaled_score = zscore * 3 + 10
-        return Math.round(scaled_score);
+        // console.log("Test Name:", cwitObj.testName, "Test Adjust:", test_adjust, "Test adjust scaled:", test_scaled,"Test Adjust Z-Score:", test_adjust_zscore, "Scaled:", scaled, "Predicted:", predicted, "Difference:", diff, "Z-Score:", zscore, "Scaled Score:", scaled_score);
+        return Math.max(1, Math.min(20, scaled_score)).toFixed(2);
       }
 
       calculateDerivedCombinedTest(cwitObj1, cwitObj2, age, edu, sex, targetCoefs, test_adjust_1, test_adjust_2, test_raw){
@@ -413,12 +421,12 @@
         var test_2_scaled = cwitObj2.scaleValue(test_adjust_2);
         coefSum += test_1_scaled * targetCoefs.test_1;
         coefSum += test_2_scaled * targetCoefs.test_2;
-        var scaled = this.scaleValue(test_raw);
         var predicted = targetCoefs.intercept + coefSum;
+        var scaled = this.scaleValue(test_raw);        
         var diff = scaled - predicted;
         var zscore = diff / targetCoefs.sd;
         var scaled_score = zscore * 3 + 10
-        return Math.round(scaled_score);
+        return Math.max(1, Math.min(20, scaled_score)).toFixed(2);
       }
 
       calculateDerived(cwit1obj, cwit2obj, cwit3obj, age, edu, sex, cwit_1_raw, cwit_2_raw, cwit_3_raw, test_raw){
