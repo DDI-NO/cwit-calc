@@ -174,7 +174,7 @@
         </div>
 
         <div class="measures" id="derived-measures">
-          <h5>Derived measure scaled scores</h5>
+          <h5>Derived measures</h5>
 
           <div class="form-group row">
             <label class="col-sm-1 col-1 col-form-label text-muted">Adj. by</label>
@@ -187,7 +187,7 @@
           <div class="form-group row">
             <label class="col-sm-1 col-3 col-form-label">CWIT 3</label>
             <div class="col-sm-2 col-3">
-              <input type="text" class="form-control form-control-sm derived" id="cwit3-1" readonly>
+              <input type="text" class="form-control form-control-sm derived" id="cwit3-1" tabindex="-1" readonly>
             </div>
             <div class="col-sm-2 col-3">
               <input type="text" class="form-control form-control-sm derived" id="cwit3-2" tabindex="-1" readonly>
@@ -1065,8 +1065,8 @@ var           scaled = scores[0];
             tscore : ''
           }
         };
-      var cwit3_derived = cwit3 !== '' ? cwit3Obj.calculateDerivedScaledScores(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit3) : empty;
-      var cwit4_derived = cwit4 !== '' ? cwit4Obj.calculateDerivedScaledScores(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit4) : empty;
+      var cwit3_derived = cwit3 !== '' ? cwit3Obj.calculateDerivedScores(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit3) : empty;
+      var cwit4_derived = cwit4 !== '' ? cwit4Obj.calculateDerivedScores(cwit1Obj, cwit2Obj, cwit3Obj, age, edu, sex, cwit1, cwit2, cwit3, cwit4) : empty;
       
 
       columns[10] = cwit1_scores.tscore;
