@@ -174,7 +174,7 @@
         </div>
 
         <div class="measures" id="derived-measures">
-          <h5>Derived measures</h5>
+          <h5>Derived measure scaled scores</h5>
 
           <div class="form-group row">
             <label class="col-sm-1 col-1 col-form-label text-muted">Adj. by</label>
@@ -261,7 +261,11 @@
         <!-- col-md-4 col -->
         <div class="col-md-4 col-sm-12">
           <p class="text-light"><small>Created by the Dementia Disease Initiation (DDI) project; No guarantee or liability implied.<br>
-            Supplement of <em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85.</em></small></p>
+            Supplement of: 
+            <li><em>Espenes et al (2023). Regression‐based normative data for the D-KEFS Color-Word Interference Test in Norwegian adults ages 20 to 85.</em></li>
+            <li><em>Lorentzen et al. Comparing the D-KEFS Color-Word Interference Test contrast scores to new regression-based derived measures in a Norwegian sample.</em></li>
+          </small>
+          </p>
         </div>
         <p class="col-md-4 mb-0"></p>
 
@@ -784,22 +788,6 @@
       if (b_sex) {
         coefSum += b_sex * sex;
       }
-    }
-
-    /**
-     * Calculates the derived measures for the CWIT3 and CWIT4 tests and sets the value to the element.
-     */
-    function calculateDerivedMeasures(age, edu, sex){
-      derived_3 = regression.cwit3.derived;
-      derived_4 = regression.cwit4.derived;
-      var cwit_1 = document.getElementById('raw-cwit1');
-      var cwit_2 = document.getElementById('raw-cwit2');
-      var cwit_3 = document.getElementById('raw-cwit3');
-
-      if (cwit_1.value !== ''){
-
-      }
-
     }
 
     /**
